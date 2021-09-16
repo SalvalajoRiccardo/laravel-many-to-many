@@ -17,7 +17,7 @@
         <h5>Tags</h5>
         <p class="card-text">
             @forelse ($post->tags as $tag)
-                <span class="bedge bedge-success">{{$tag->name}}</span>
+                <span class="badge badge-success">{{$tag->name}}</span>
             @empty
                 <span>No Tags</span>
             @endforelse
