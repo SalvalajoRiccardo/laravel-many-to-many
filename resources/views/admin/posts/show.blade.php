@@ -7,14 +7,24 @@
     </div>
 
     <div class="card-body">
-        <h5 class="card-title">{{$post->title}}</h5>
-        <p class="card-text">{{$post->content}}</p>
+        <h5 class="card-title">Title: {{$post->title}}</h5>
+        <p class="card-text">content: {{$post->content}}</p>
         <p class="card-text">category:  
             @if ($post->category)
             {{$post->category->name}}
             @endif
         </p>
-        <p class="card-text">slug: {{$post->slug}}</p>
+        <h5>Tags</h5>
+        <p class="card-text">
+            @forelse ($post->tags as $tag)
+                <span class="bedge bedge-success">{{$tag->name}}</span>
+            @empty
+                <span>No Tags</span>
+            @endforelse
+
+
+        </p>
+
         <a href="{{route('admin.posts.index')}}" class="btn btn-primary">Go back</a>
     </div>
 </div>

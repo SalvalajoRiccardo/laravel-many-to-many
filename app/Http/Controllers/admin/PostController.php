@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Post;
+use App\Tag;
 use App\Category;
 
 class PostController extends Controller
@@ -28,7 +29,8 @@ class PostController extends Controller
      */
     public function create(){
         $categories = Category::all();
-       return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+       return view('admin.posts.create', compact('categories','tags'));
     }
 
     /**
@@ -61,6 +63,12 @@ class PostController extends Controller
 
         $newpost->save();
 
+        if(isset($data['tags'])){
+            $newpost->tags()->attach($data['tags']);
+        }
+        
+
+
         return redirect()->route('admin.posts.index')->with('created', 'Hai creato: ' . $newpost->slug);
     }
 
@@ -84,7 +92,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
-        return view('admin.posts.edit',compact('post','categories'));
+        $tags = Tag::all();
+        return view('admin.posts.edit',compact('post','categories','tags'));
     }
 
     /**
@@ -119,6 +128,10 @@ class PostController extends Controller
         }
         $post->update($data);
 
+        if(isset($data['tags'])){
+            $post->tags()->sync($data['tags']);
+        }
+
         return redirect()->route('admin.posts.index')->with('updated', 'Hai modificato: ' . $post->slug);
     }
 
@@ -131,7 +144,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-
         return redirect()->route('admin.posts.index')->with('destroyed', 'Hai cancellato: ' . $post->slug);
     }
 }
